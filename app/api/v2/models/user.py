@@ -16,7 +16,7 @@ class User(object):
 
     ''' create user '''
 
-    def create_user(self):
+    def create(self):
         query = "INSERT INTO " \
             "users (name,username,email,password,role)" \
             "VALUES('%s','%s','%s','%s','%s')" % (
