@@ -10,21 +10,16 @@ class User(object):
     ''' create user '''
     @staticmethod
     def create(data):
-        query = sql.SQL("insert into {} ({}) values ({})").format(
-            sql.Identifier("users"),
-            sql.SQL(', ').join(map(sql.Identifier, data.keys())),
-            sql.SQL(', ').join(sql.Placeholder() * len(data))
-        )
-        cur.execute(query, list(data.values()))
-
+        
+        query = "INSERT INTO users (name,username,email,password,role)" \
+                "VALUES('%s','%s', '%s', '%s', '%s')" % (
+                    data['name'],data['username'],data['email'],data['password'],data['role'])
+        cur.execute(query)
+        
     @staticmethod
     def exists(data):
         if data['email']:
-            query = sql.SQL("select * from {} where {}= %s ").format(
-                sql.Identifier("users"),
-                sql.Identifier('email'),
-                data['email'])
-
+            query="SELECT * FROM users WHERE email = '%s';" % data['email']
             if cur.execute(query):
                 return True
         return False

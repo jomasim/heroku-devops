@@ -17,13 +17,18 @@ class UserController(Resource):
 
         if validator.validate() == None:
 
-            ''' append default role '''
-            
-            data['role']="0"
+            ''' check if user exists '''
+            if User.exists(data):
+                return make_response(jsonify({'message': 'user with email already exists'}), 409)
+            else:
 
-            ''' save user '''
-            User.create(data)
+                ''' append default role '''
 
-            return make_response(jsonify({'message': 'user created successfully'}), 201)
+                data['role'] = "0"
+
+                ''' save user '''
+                User.create(data)
+
+                return make_response(jsonify({'message': 'user created successfully'}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
