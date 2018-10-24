@@ -20,6 +20,6 @@ class User(object):
     def exists(data):
         if data['email']:
             query="SELECT * FROM users WHERE email = '%s';" % data['email']
-            if cur.execute(query):
-                return True
+            cur.execute(query)
+            return cur.fetchone()
         return False
