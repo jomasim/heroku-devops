@@ -10,10 +10,10 @@ class User(object):
     ''' create user '''
     @staticmethod
     def create(data):
-        
+        hashed=generate_password_hash(data['paswword'])
         query = "INSERT INTO users (name,username,email,password,role)" \
                 "VALUES('%s','%s', '%s', '%s', '%s')" % (
-                    data['name'],data['username'],data['email'],data['password'],data['role'])
+                    data['name'],data['username'],data['email'],hashed,data['role'])
         cur.execute(query)
         
     @staticmethod
