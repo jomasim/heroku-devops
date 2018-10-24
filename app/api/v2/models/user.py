@@ -9,11 +9,11 @@ class User(object):
    
     ''' create user '''
     @staticmethod
-    def create_user(data):
+    def create(data):
         query = sql.SQL("insert into {} ({}) values ({})").format(
             sql.Identifier("users"),
             sql.SQL(', ').join(map(sql.Identifier, data.keys())),
             sql.SQL(', ').join(sql.Placeholder() * len(data))
         )
-        cur.execute(query, data.values())
+        cur.execute(query, list(data.values()))
      

@@ -17,11 +17,12 @@ class UserController(Resource):
 
         if validator.validate() == None:
 
-            ''' create a new user instance '''
-            user = User(data['name'], data['username'],data['email'], data['password'])
+            ''' append default role '''
+            
+            data['role']="0"
 
-            ''' save user to database '''
-            user.create()
+            ''' save user '''
+            User.create(data)
 
             return make_response(jsonify({'message': 'user created successfully'}), 201)
         else:
