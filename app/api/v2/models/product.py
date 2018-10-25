@@ -32,6 +32,14 @@ class Product(object):
             return cur.fetchone()
         return False
 
+    ''' returns all products '''
+    
+    @staticmethod
+    def get():
+        query = "SELECT * FROM products"
+        cur.execute(query)
+        return cur.fetchall()
+
     @staticmethod
     def update(payload, id):
         pass
