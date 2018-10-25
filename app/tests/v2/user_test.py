@@ -17,13 +17,18 @@ class UserTestCase(BaseTestCase):
 
     def test_for_existing_user(self):
         existing_user = {
-            'name': 'john doe',
-            'email': 'doe@gmail.com',
-            'username': 'john',
+            'name': 'jane doe',
+            'email': 'janedoe@gmail.com',
+            'username': 'jane',
             'password':'123456'
         }
         response = self.post('/api/v2/user', existing_user)
         self.assertEqual(response.status_code, 409)
         self.assertEqual(json.loads(response.data), {
                          'message': 'user with email already exists'})
+        self.assertEqual(response.mimetype, 'application/json')
+        
+    def test_for_empty_data(self):
+        response = self.post('/api/v2/user', data={})
+        self.assertEqual(response.status_code, 422)
         self.assertEqual(response.mimetype, 'application/json')
