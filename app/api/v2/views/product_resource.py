@@ -7,17 +7,15 @@ from app.api.v2.models.product import Product
 class ProductController(Resource):
     def get(self, product_id=None):
         if not product_id:
-            return make_response(jsonify({'products': products}), 200)
+            return make_response(jsonify({'products': Product.get()}), 200)
         else:
 
             ''' search for product  using product_id '''
 
-            product = [
-                product for product in products if product['id'] == str(product_id)]
-            if not product:
+            if not Product.get_by_id(product_id):
                 return make_response(jsonify({'error': 'product not found'}), 404)
             else:
-                return make_response(jsonify({'product': product}), 200)
+                return make_response(jsonify({'product': Product.get_by_id(product_id)}), 200)
 
     def post(self):
         data = request.get_json()
@@ -25,7 +23,7 @@ class ProductController(Resource):
         if data['product_id']:
             if Product.delete_by_Id(data['product_id']):
                 return make_response(jsonify({'message': "product deleted successfully"}), 201)
-            return make_response(jsonify({'message': "product does not exist"}), 404)
+            return make_response(jsonify({'message': "product not found"}), 404)
         else:
             request_schema = {'name': 'required',
                             'category': 'required',
