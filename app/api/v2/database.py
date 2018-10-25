@@ -1,14 +1,21 @@
 from psycopg2 import connect, sql
 from utils import env
+from sys import modules
 
 
 class DBConnection():
     @staticmethod
     def __connection():
-        host = env('DBHOST')
-        user = env('DBUSER')
-        name = env('DBNAME')
-        password = env('DBPASS')
+        if 'pytest' in modules.keys():
+            host = env('DBHOST')
+            user = env('DBUSER')
+            name = env('DBNAME')
+            password = env('DBPASS')
+        else:
+            host = env('TESTING_DBHOST')
+            user = env('TESTING_DBUSER')
+            name = env('TESTING_DBNAME')
+            password = env('TESTING_DBPASS')
 
         return connect(
             host=host,
