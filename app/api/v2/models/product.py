@@ -41,9 +41,9 @@ class Product(object):
         return cur.fetchall()
 
     @staticmethod
-    def update(data):
+    def update(data,product_id):
         query="UPDATE products SET name='%s',category='%s',description='%s',price='%s',created_by='%s' WHERE id='%s' " %(
-        data['name'], data['category'],json.dumps(data['description']),data['price'],  data['created_by'],data['id'])
+        data['name'], data['category'],json.dumps(data['description']),data['price'],  data['created_by'],product_id)
         return cur.execute(query)
         
        

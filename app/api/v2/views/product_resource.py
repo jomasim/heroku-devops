@@ -56,7 +56,11 @@ class ProductController(Resource):
                 return make_response(jsonify({"message": "product not found"}), 404)
 
     @jwt_required
-    def put(self,):
+    def put(self,product_id=None):
+
+        if not product_id:
+            return make_response(jsonify({"message":"productid is required"}), 422)
+
         data = request.get_json()
         user = get_jwt_identity()
 
@@ -74,7 +78,7 @@ class ProductController(Resource):
         if validator.validate() == None:
 
             ''' update product '''
-            Product.update(data)
+            Product.update(data,product_id)
 
             return make_response(jsonify({'message': "product created successfully"}), 201)
         else:
