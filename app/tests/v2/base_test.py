@@ -30,7 +30,7 @@ class BaseTestCase(unittest.TestCase):
 
             data = {"email": "janedoe@gmail.com", "password": "123456"}
 
-            response = self.client.post(product_url,
+            response = self.client.post(auth_url,
                                         data=json.dumps(data),
                                         content_type='application/json')
             data = json.loads(response.data)
@@ -61,7 +61,7 @@ class BaseTestCase(unittest.TestCase):
                                'gender': 'female'
                            }, 'price': '1800'}
 
-            self.client.post(auth_url,
+            self.client.post(product_url,
                     data=json.dumps(product2),
                     content_type='application/json',
                     headers={"Authorization": self.token})
