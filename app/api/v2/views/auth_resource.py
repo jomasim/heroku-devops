@@ -10,7 +10,7 @@ import datetime
 class AuthController(Resource):
    def post(self):
         data = request.get_json()
-        request_schema = {'username': 'required|string',
+        request_schema = {'email': 'required|email',
                           'password': 'required|string|min:6|max:12'}
 
         validator = Request(data, request_schema)
