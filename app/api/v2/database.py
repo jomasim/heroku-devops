@@ -20,4 +20,6 @@ class DBConnection():
 
     @staticmethod
     def get_connection():
-        return DBConnection.__connection()
+        conn=DBConnection.__connection()
+        conn.autocommit=True
+        return conn
