@@ -20,7 +20,7 @@ class Product(object):
     @staticmethod
     def delete_by_Id(product_id):
         if product_id:
-            query = "DELETE * FROM products WHERE id = '%s';" % product_id
+            query = "DELETE  FROM products WHERE id = '%s';" % product_id
             cur.execute(query)
         return False
 

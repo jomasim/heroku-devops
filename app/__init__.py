@@ -30,6 +30,9 @@ def create_app(config_setting):
     api.add_resource(ProductController, '/products/',
                      strict_slashes=False, endpoint='products')
 
+    api.add_resource(ProductController, '/products/<int:product_id>/',
+                     strict_slashes=False, endpoint='delete/put product')
+
     app.register_blueprint(api_blueprint)
 
     return app
