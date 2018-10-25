@@ -7,7 +7,6 @@ python:
 before_install:
 
   - 'pip install -U pip'
-  - 'export PYTHONPATH=$PYTHONPATH:$(pwd)'
 
 install:
   - pip install -r requirements.txt
@@ -25,7 +24,7 @@ before_script:
 
 script:
   #  run tests
-  - coverage run  -m pytest && coverage report
+  - coverage run --source=app/tests/v2 -m pytest && coverage report
 
 after_success:
   # coverage report
