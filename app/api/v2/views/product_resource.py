@@ -80,6 +80,6 @@ class ProductController(Resource):
             ''' update product '''
             Product.update(data,product_id)
 
-            return make_response(jsonify({'message': "product created successfully"}), 201)
+            return make_response(jsonify({'message': "product updated successfully"}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)

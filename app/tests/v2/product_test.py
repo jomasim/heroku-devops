@@ -4,31 +4,52 @@ from app.tests.v2.base_test import BaseTestCase
 
 class ProductTestCase(BaseTestCase):
     def test_creating_product(self):
-        new_product = {'id':'1','name': 'shirt', 'category': 'apparel', 'description': {
+        new_product = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
             'color': 'black',
             'size': '35',
             'gender': 'male'
         }, 'price': '1200'}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.mimetype,'application/json')
+        self.assertEqual(response.mimetype, 'application/json')
 
     def test_for_empty_data(self):
-        response=self.post('/api/v2/products', data={})
+        response = self.post('/api/v2/products', data={})
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.mimetype,'application/json')
+        self.assertEqual(response.mimetype, 'application/json')
 
     def test_delete_existing_product(self):
-        response=self.delete('/api/v2/products/1')
-        self.assertEqual(response.status_code,204)
-        self.assertEqual(response.mimetype,'application/json')
-    
+        response = self.delete('/api/v2/products/1')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.mimetype, 'application/json')
+
     def test_delete_non_existing_product(self):
-        response=self.delete('/api/v2/products/199434')
-        self.assertEqual(response.status_code,404)
-        self.assertEqual(json.loads(response.data),{'message':'product not found'})
-        self.assertEqual(response.mimetype,'application/json')
+        response = self.delete('/api/v2/products/199434')
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(json.loads(response.data), {
+                         'message': 'product not found'})
+        self.assertEqual(response.mimetype, 'application/json')
 
+    def test_update_empty_data(self):
+        response = self.put('/api/v2/products/2', data={})
+        self.assertEqual(response.status_code, 422)
 
-    
-
+    def test_update_product(self):
+        update = {'id': '2', 'name': 'shirt', 'category': 'apparel', 'description': {
+            'color': 'light grey',
+            'size': '27',
+            'gender': 'male'
+        }, 'price': '1750'}
+        response = self.put('/api/v2/products/2', data=update)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype, 'application/json')
+        
+    def test_update_product_without_id(self):
+        update = {'id': '2', 'name': 'shirt', 'category': 'apparel', 'description': {
+            'color': 'light grey',
+            'size': '27',
+            'gender': 'male'
+        }, 'price': '1750'}
+        response = self.put('/api/v2/products/', data=update)
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.mimetype, 'application/json')
