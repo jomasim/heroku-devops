@@ -22,3 +22,27 @@ class DBConnection():
         conn=DBConnection.__connection()
         conn.autocommit=True
         return conn
+
+class TestingDB():
+    @staticmethod
+    def __connection():
+        host = env('TESTING_DBHOST')
+        user = env('TESTING_DBUSER')
+        name = env('TESTING_DBNAME')
+        password = env('_TESTING_DBPASS')
+
+        return connect(
+            host=host,
+            user=user,
+            password=password,
+            dbname=name
+        )
+
+    @staticmethod
+    def get_connection():
+        conn=DBConnection.__connection()
+        conn.autocommit=True
+        return conn
+    
+    
+
