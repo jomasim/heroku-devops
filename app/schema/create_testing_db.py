@@ -1,9 +1,14 @@
-from app.api.v2.database import TestingDB
+from app.api.v2.database import DBConnection
+import os
 
-cur=TestingDB.get_connection().cursor()
+ROOTDIRECTORY=os.path.dirname(os.path.abspath(__file__))
+
+cur=DBConnection.get_connection().cursor()
 
 def create_testdb():
-    return cur.execute(open(('createdb.sql'), 'r').read())
+    path=ROOTDIRECTORY + "/createdb.sql"
+    return cur.execute(open(path, 'r').read())
 
 def drop_testdb():
-    return cur.execute(open(('dropdb.sql'), 'r').read())
+    path=ROOTDIRECTORY + "/dropdb.sql"
+    return cur.execute(open(path, 'r').read())
