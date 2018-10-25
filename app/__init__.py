@@ -5,6 +5,7 @@ from utils import env
 from instance.api_config import api_config
 from app.api.v2.views.user_resource import UserController
 from app.api.v2.views.auth_resource import AuthController
+from app.api.v2.views.product_resource import ProductController
 
 api_blueprint = Blueprint("store-api", __name__, url_prefix='/api/v2')
 jwt = JWTManager()
@@ -25,6 +26,9 @@ def create_app(config_setting):
                      strict_slashes=False, endpoint='post_user')
     api.add_resource(AuthController, '/auth/',
                      strict_slashes=False, endpoint='auth')
+
+    api.add_resource(ProductController, '/products/',
+                     strict_slashes=False, endpoint='products')
 
     app.register_blueprint(api_blueprint)
 

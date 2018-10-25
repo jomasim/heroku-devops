@@ -1,10 +1,9 @@
 from app.api.v2.database import DBConnection
+from psycopg2 import sql
 import psycopg2.extras
 
 
-cur = DBConnection.get_connection().cursor(
-    cursor_factory=psycopg2.extras.DictCursor)
-
+cur = DBConnection.get_connection().cursor(cursor_factory = psycopg2.extras.DictCursor)
 
 class Product(object):
 

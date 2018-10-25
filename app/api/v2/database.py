@@ -10,13 +10,12 @@ class DBConnection():
         name = env('DBNAME')
         password = env('DBPASS')
 
-        DBConnection.__connection = connect(
+        return connect(
             host=host,
             user=user,
             password=password,
             dbname=name
         )
-        return DBConnection.__connection
 
     @staticmethod
     def get_connection():
