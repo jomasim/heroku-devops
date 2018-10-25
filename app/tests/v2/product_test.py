@@ -18,5 +18,17 @@ class ProductTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.mimetype,'application/json')
 
+    def test_delete_existing_product(self):
+        response=self.delete('/api/v2/products/2')
+        self.assertEqual(response.status_code,204)
+        self.assertEqual(response.mimetype,'application/json')
+    
+    def test_delete_non_existing_product(self):
+        response=self.delete('/api/v2/products/199434')
+        self.assertEqual(response.status_code,404)
+        self.assertEqual(json.loads(response.data),{'message':'product not found'})
+        self.assertEqual(response.mimetype,'application/json')
+
+
     
 
