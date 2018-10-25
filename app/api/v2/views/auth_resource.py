@@ -21,10 +21,10 @@ class AuthController(Resource):
             password = data['password']
 
             if User.exists({'email':email}):
-
+                user=User.get_by_email(email)
                 if check_password_hash(user['password'], password):
                     exp = datetime.timedelta(minutes=20)
-                    token = create_access_token(user['username'], exp)
+                    token = create_access_token(user['email'], exp)
                     return make_response(jsonify({"message": "login successful",
                                                   "access_token": token}), 200)
             return make_response(jsonify({"message": "invalid login"}), 401)
