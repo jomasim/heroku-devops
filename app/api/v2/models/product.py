@@ -1,6 +1,7 @@
 from app.api.v2.database import DBConnection
 from psycopg2 import sql
 import psycopg2.extras
+import json
 
 
 cur = DBConnection.get_connection().cursor(cursor_factory = psycopg2.extras.DictCursor)
@@ -11,9 +12,9 @@ class Product(object):
     @staticmethod
     def create(data):
 
-        query = "INSERT INTO products (name,category,description,price,user)" \
+        query = "INSERT INTO products (name,category,description,price,created_by)" \
                 "VALUES('%s','%s', '%s', '%s', '%s')" % (
-                    data['name'], data['category'], data['price'], data['description'], data['create_by'])
+                    data['name'], data['category'], data['price'], json.dumps(data['description']), data['created_by'])
         cur.execute(query)
 
     @staticmethod
