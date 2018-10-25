@@ -75,5 +75,16 @@ class BaseTestCase(unittest.TestCase):
                                 content_type='application/json',
                                 headers={"Authorization": self.token})
 
+    def put(self, url, data):
+        return self.client.put(
+            url,
+            data=json.dumps(data),
+            content_type='application/json',
+            headers={"Authorization": self.token}
+        )
+
+    def delete(self, url):
+        return self.client.delete(url, headers={"Authorization": self.token})
+
     def tearDown(self):
         drop_testdb()
