@@ -1,5 +1,5 @@
 import json
-from tests.base_test import BaseTestCase
+from app.tests.v2.base_test import BaseTestCase
 
 
 class ProductTestCase(BaseTestCase):
@@ -17,6 +17,6 @@ class ProductTestCase(BaseTestCase):
         response=self.post('/api/v2/products', data={})
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.mimetype,'application/json')
-    
+
     
 
