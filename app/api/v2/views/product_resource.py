@@ -43,19 +43,39 @@ class ProductController(Resource):
             return make_response(jsonify({'message': "product created successfully"}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
-    
 
     @jwt_required
-    def delete(self,product_id=None):
+    def delete(self, product_id=None):
         if not product_id:
-              return make_response(jsonify({"message":"productid is required"}), 422)
+              return make_response(jsonify({"message": "productid is required"}), 422)
         else:
-            if Product.get_by_id(product_id) !=None:
+            if Product.get_by_id(product_id) != None:
                 Product.delete_by_Id(product_id)
-                return make_response(jsonify({"message":"product deleted successfully"}), 204)
+                return make_response(jsonify({"message": "product deleted successfully"}), 204)
             else:
-                return make_response(jsonify({"message":"product not found"}), 404)
+                return make_response(jsonify({"message": "product not found"}), 404)
 
+    @jwt_required
+    def put(self,):
+        data = request.get_json()
+        user = get_jwt_identity()
 
+        ''' append user '''
 
+        data['created_by'] = user
 
+        request_schema = {'name': 'required',
+                          'category': 'required',
+                          'description': 'required',
+                          'price': 'required',
+                          }
+
+        validator = Request(data, request_schema)
+        if validator.validate() == None:
+
+            ''' update product '''
+            Product.update(data)
+
+            return make_response(jsonify({'message': "product created successfully"}), 201)
+        else:
+            return make_response(jsonify(validator.validate()), 422)
