@@ -10,13 +10,13 @@ class BaseTestCase(unittest.TestCase):
         create_testdb()
         ''' create sample login user in test db '''
 
-        create_user_url = "/api/v1/user"
-        auth_url = "/api/v1/user"
+        create_user_url = "/api/v2/user"
+        auth_url = "/api/v2/auth"
 
         sample_user = {
             'name': 'jane doe',
             'email': 'janedoe@gmail.com',
-            'username': 'john',
+            'username': 'jane',
             'password':'123456'
         }
 
@@ -27,7 +27,7 @@ class BaseTestCase(unittest.TestCase):
 
             ''' generate token from sample user if creation was successful '''
 
-            data= {"username": "joma", "password": "123456"}
+            data= {"email": "janedoe@gmail.com", "password": "123456"}
 
             response = self.client.post(auth_url,
                                         data=json.dumps(data),
