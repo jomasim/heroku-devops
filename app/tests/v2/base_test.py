@@ -46,7 +46,7 @@ class BaseTestCase(unittest.TestCase):
                                'size': '35',
                                'gender': 'male'
                            }, 'price': '1500'}
-
+        
             self.client.post(product_url,
                     data=json.dumps(product),
                     content_type='application/json',

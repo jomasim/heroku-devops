@@ -52,7 +52,7 @@ class ProductController(Resource):
         else:
             if Product.get_by_id(product_id) !=None:
                 Product.delete_by_Id(product_id)
-                return make_response(jsonify({"message":"product deleted successfully"}), 404)
+                return make_response(jsonify({"message":"product deleted successfully"}), 204)
             else:
                 return make_response(jsonify({"message":"product not found"}), 404)
 
