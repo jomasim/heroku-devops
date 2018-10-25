@@ -20,7 +20,7 @@ before_script:
 
 script:
   #  run tests
-  - coverage run --source=api -m pytest && coverage report
+  - coverage run --source=app -m pytest && coverage report
 
 after_success:
   # coverage report
