@@ -1,13 +1,13 @@
 import json
 import unittest
 from run import app
-from app.schema.create_testing_db import create_testdb, drop_testdb
+from app.schema.db_utils import create_db, drop_db
 
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client(self)
-        create_testdb()
+        create_db()
         ''' create sample login user in test db '''
 
         create_user_url = "/api/v2/user"
@@ -87,4 +87,4 @@ class BaseTestCase(unittest.TestCase):
         return self.client.delete(url, headers={"Authorization": self.token})
 
     def tearDown(self):
-        drop_testdb()
+        drop_db()
