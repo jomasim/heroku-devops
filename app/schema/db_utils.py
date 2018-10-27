@@ -4,8 +4,8 @@ import os
 ROOTDIRECTORY=os.path.dirname(os.path.abspath(__file__))
 
 cur=DBConnection.get_connection().cursor()
-drop_query_file=ROOTDIRECTORY + "/createdb.sql"
-create_query_file= path=ROOTDIRECTORY + "/dropdb.sql"
+create_query_file=ROOTDIRECTORY + "/createdb.sql"
+drop_query_file=ROOTDIRECTORY + "/dropdb.sql"
 
 def create_db():
     return cur.execute(open(create_query_file, 'r').read())
