@@ -8,7 +8,8 @@ import datetime
 
 
 class AuthController(Resource):
-   def post(self):
+
+    def post(self):
         data = request.get_json()
         request_schema = {'email': 'required|email',
                           'password': 'required|string|min:6|max:12'}
@@ -20,13 +21,27 @@ class AuthController(Resource):
             email = data['email']
             password = data['password']
 
-            if User.exists({'email':email}):
+            ''' verify password '''
+            if AuthController.__verify_password(email,password):
                 user=User.get_by_email(email)
-                if check_password_hash(user['password'], password):
-                    exp = datetime.timedelta(minutes=20)
-                    token = create_access_token(user['id'], exp)
-                    return make_response(jsonify({"message": "login successful",
+                token=AuthController.__generate_token(user['id'])
+                return make_response(jsonify({"message": "login successful",
                                                   "access_token": token}), 200)
-            return make_response(jsonify({"message": "invalid login"}), 401)
+            else:                                    
+                return make_response(jsonify({"message": "invalid login"}), 401)
         else:
             return make_response(jsonify(validator.validate()), 422)
+
+    @staticmethod
+    def __generate_token(user_id):
+        exp = datetime.timedelta(minutes=20)
+        return create_access_token(user_id, exp)
+
+    @staticmethod
+    def __verify_password(email,password):
+        if User.exists({'email':email}):
+            user=User.get_by_email(email)
+            return check_password_hash(user['password'], password)
+        return False
+                
+
