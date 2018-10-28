@@ -44,23 +44,25 @@ class Request():
             return True
         return False
 
-    def isEmail(self,arg):
+    @staticmethod
+    def isEmail(arg):
         if re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", str(arg)):
             return True
         return False
 
-    def isMin(self,arg,field_rules):
+    @staticmethod
+    def isMin(arg, field_rules):
         min_length = Request.get_rule_argument("min", field_rules)
         if len(str(arg)) < int(min_length):
             return True
         return False
 
-    def isMax(self,arg,field_rules):
+    @staticmethod
+    def isMax(arg, field_rules):
         max_length = Request.get_rule_argument("max", field_rules)
         if len(str(arg)) > int(max_length):
             return True
         return False
-    
 
     def validate_field(self, field, field_rules):
         value = self.get_value(field)
@@ -72,22 +74,14 @@ class Request():
         if field_errors:
             return field_errors
 
-        if 'email' in field_rules and not self.isEmail(value):
-            field_errors.append(value + " not a valid email")
+        ''' collect all other errors '''
 
-        if 'string' in field_rules and not isinstance(value, str):
-            field_errors.append(field + " should be a string")
+        length_errors=Request.is_allowed_length(field,value,field_rules)
+        instance_errors=Request.is_type_instance(field,value,field_rules)
+        type_errors=Request.is_type(value,field_rules)
 
-        if 'int' in field_rules and not isinstance(value, int):
-            field_errors.append(field + " should be an integer")
-
-        if Request.get_rule_argument("min", field_rules) and self.isMin(value,field_rules):
-            min_length = Request.get_rule_argument("min", field_rules)
-            field_errors.append(field + " should have a minimum of " + min_length + " characters")
-
-        if Request.get_rule_argument("max", field_rules) and self.isMax(value,field_rules):
-            max_length = Request.get_rule_argument("max", field_rules)
-            field_errors.append(field + " should have a maximum of "+ max_length + " characters")
+        ''' include collected errors to field errors '''
+        field_errors=field_errors+instance_errors+type_errors+length_errors
 
         return field_errors
 
@@ -105,3 +99,36 @@ class Request():
                 pieces = rule.split(':')
                 return pieces[1]
         return None
+
+    @staticmethod
+    def is_type_instance(field, value, field_rules):
+        ''' method returns all instance errors '''
+        field_errors = []
+        if 'string' in field_rules and not isinstance(value, str):
+            field_errors.append(field + " should be a string")
+
+        if 'int' in field_rules and not isinstance(value, int):
+            field_errors.append(field + " should be an integer")
+        return field_errors
+
+    @staticmethod
+    def is_allowed_length(field, value, field_rules):
+        ''' method returns all field length errors '''
+        field_errors = []
+        min_length = Request.get_rule_argument("min", field_rules)
+        max_length = Request.get_rule_argument("max", field_rules)
+
+        if min_length and Request.isMin(value,field_rules):
+            field_errors.append(field + " should have a minimum of " + min_length + " characters")
+        if max_length and Request.isMax(value,field_rules):
+            field_errors.append(field + " should have a maximum of "+ max_length + " characters")
+        return field_errors
+
+    @staticmethod
+    def is_type(value,field_rules):
+        ''' return type errors i.e password,email '''
+        field_errors=[]
+        if 'email' in field_rules and not Request.isEmail(value):
+            field_errors.append(value + " not a valid email")
+        return field_errors
+
