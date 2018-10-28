@@ -19,6 +19,6 @@ class TestAuth(BaseTestCase):
         user={"email": "janedoe@gmail.com",
             "password": "123456"
                 }
-        response = self.post('/api/v2/auth', data=user)
+        response = self.post('/api/v2/login', data=user)
         self.assertTrue(response)
         self.assertEqual(response.status_code,200)

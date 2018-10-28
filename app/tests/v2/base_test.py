@@ -11,7 +11,7 @@ class BaseTestCase(unittest.TestCase):
         ''' create sample login user in test db '''
 
         create_user_url = "/api/v2/user"
-        auth_url = "/api/v2/auth"
+        auth_url = "/api/v2/login"
         product_url="/api/v2/products"
 
         sample_user = {
