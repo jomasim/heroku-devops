@@ -24,8 +24,8 @@ def create_app(config_setting):
     api = Api(api_blueprint)
     api.add_resource(UserController, '/user/',
                      strict_slashes=False, endpoint='post_user')
-    api.add_resource(AuthController, '/auth/',
-                     strict_slashes=False, endpoint='auth')
+    api.add_resource(AuthController, '/login/',
+                     strict_slashes=False, endpoint='login')
 
     api.add_resource(ProductController, '/products/',
                      strict_slashes=False, endpoint='products')

@@ -11,6 +11,30 @@ class ProductTestCase(BaseTestCase):
         }, 'price': '1200'}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(json.loads(response.data), {
+                         'message': 'product created successfully'})
+        self.assertEqual(response.mimetype, 'application/json')
+
+    def test_creating_product_with_empty_price(self):
+        new_product = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
+            'color': 'black',
+            'size': '35',
+            'gender': 'male'
+        }, "price": ""}
+        response = self.post('/api/v2/products', data=new_product)
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(json.loads(response.data), {'errors': {'price': ['price is required']}})
+        self.assertEqual(response.mimetype, 'application/json')
+
+    def test_creating_product_with_zero_price(self):
+        new_product = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
+            'color': 'black',
+            'size': '35',
+            'gender': 'male'
+        }, "price": "-34"}
+        response = self.post('/api/v2/products', data=new_product)
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(json.loads(response.data), {'errors': {'price': ['price should not be a zero']}})
         self.assertEqual(response.mimetype, 'application/json')
 
     def test_for_empty_data(self):

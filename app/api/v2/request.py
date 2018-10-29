@@ -86,7 +86,7 @@ class Request():
         value = self.get_value(field)
         field_errors = []
 
-        if 'required' in field_rules and value == None or self.isEmpty(value):
+        if 'required' in field_rules and value == None or not value:
             field_errors.append(field + " is required")
         ''' if required field is empty or null return'''
         if field_errors:
