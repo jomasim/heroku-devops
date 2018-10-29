@@ -34,15 +34,16 @@ class ProductController(Resource):
                           'price': 'required',
                           }
 
-        validator = Request(data, request_schema)
-        if validator.validate() == None:
+        all_errors = self.get_validation_errors(data,request_schema)
+
+        if all_errors == None:
 
             ''' create product '''
             Product.create(data)
 
             return make_response(jsonify({'message': "product created successfully"}), 201)
         else:
-            return make_response(jsonify(validator.validate()), 422)
+            return make_response(jsonify(all_errors), 422)
 
     @jwt_required
     def delete(self, product_id=None):
@@ -83,3 +84,11 @@ class ProductController(Resource):
             return make_response(jsonify({'message': "product updated successfully"}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
+    
+    def get_validation_errors(self,data,request_schema):
+        validator = Request(data, request_schema)
+        all_errors = validator.validate()
+        if all_errors==None and int(data['price']) <= 0:
+            all_errors={}
+            all_errors['errors']={"price":['price should not be a zero']}
+        return all_errors
