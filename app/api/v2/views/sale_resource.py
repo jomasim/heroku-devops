@@ -4,7 +4,7 @@ from app.api.v2.request import Request
 from app.api.v2.models.sale import Sale
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-class SalesController():
+class SalesController(Resource):
     @jwt_required
     def get(self, sale_id=None):
         if not sale_id:
@@ -27,7 +27,7 @@ class SalesController():
 
         data['created_by'] = user
 
-        all_errors = self.get_validation_errors(data)
+        all_errors = None
 
         if all_errors == None:
 
