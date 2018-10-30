@@ -13,6 +13,7 @@ class BaseTestCase(unittest.TestCase):
         create_user_url = "/api/v2/user"
         auth_url = "/api/v2/login"
         product_url="/api/v2/products"
+        sale_url="/api/v2/sales"
 
         sample_user = {
             'name': 'jane doe',
@@ -66,6 +67,36 @@ class BaseTestCase(unittest.TestCase):
                     data=json.dumps(product2),
                     content_type='application/json',
                     headers={"Authorization": self.token})
+
+            sale1 = {
+
+                'line_items': {
+                    'product_id': '1',
+                    'item_count': '2',
+                    'selling_price': '1700'
+                }
+            }
+
+            self.client.post(sale_url,
+                            data=json.dumps(sale1),
+                            content_type='application/json',
+                            headers={"Authorization": self.token})
+
+            sale2 = {
+
+                    'line_items': {
+                        'product_id': '1',
+                        'item_count': '2',
+                        'selling_price': '1700'
+                    }
+                }
+            
+
+            self.client.post(sale_url,
+                            data=json.dumps(sale2),
+                            content_type='application/json',
+                            headers={"Authorization": self.token})
+        
 
     def get(self, url):
         return self.client.get(url, headers={"Authorization": self.token})

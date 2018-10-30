@@ -37,6 +37,11 @@ def create_app(config_setting):
     api.add_resource(SalesController, '/sales/',
                      strict_slashes=False, endpoint='sales')
 
+
+    api.add_resource(SalesController, '/sales/<int:sale_id>/',
+                     strict_slashes=False, endpoint='get_all_sales')
+                     
+
     app.register_blueprint(api_blueprint)
 
     return app

@@ -7,9 +7,6 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'id': '1',
-            'date_created': '12/7/2008',
-            'user': 'attendant1',
             'line_items': {
                     'product_id': '1',
                     'item_count': '3',
@@ -27,9 +24,6 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'id': '1',
-            'date_created': '12/7/2008',
-            'user': 'attendant1',
             'line_items': {
                     'product_id': '1',
                     'item_count': '0',
@@ -48,9 +42,6 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'id': '1',
-            'date_created': '12/7/2008',
-            'user': 'attendant1',
             'line_items': {
                     'product_id': '1',
                     'item_count': '2',
@@ -75,3 +66,8 @@ class SaleTestCase(BaseTestCase):
                                      'selling_price': ['selling_price is required']}
                           })
         self.assertEqual(response.mimetype, 'application/json')
+
+    def test_get_sales(self):
+        response=self.get('/api/v2/sales/1')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.mimetype,'application/json')
