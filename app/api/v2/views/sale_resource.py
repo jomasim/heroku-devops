@@ -27,7 +27,7 @@ class SalesController(Resource):
 
         data['created_by'] = user
 
-        all_errors = None
+        all_errors = self.get_validation_errors(data)
 
         if all_errors == None:
 
@@ -44,21 +44,24 @@ class SalesController(Resource):
         line_items_schema = {'product_id': 'required',
         'item_count':'required','selling_price':'required'
         }
-        
-        line_items_key_error = Request(data, {'line_items': 'required'})
-        line_items_errors=Request(data['line_items'], line_items_schema)
+
+        try:
+            line_items=Request(data['line_items'], line_items_schema)
+        except Exception as e:
+            line_items=Request([], line_items_schema)
+            print(str(e) + " key error")
         
         ''' get all general validation errors  '''
-        all_errors = dict(line_items_key_error.validate()).copy() 
-        all_errors.update(line_items_errors.validate())
 
+        all_errors =  line_items.validate()
+        
         if all_errors==None:
 
             all_errors={}
 
-            if int(data['line_items']['count']) <= 0:
+            if int(data['line_items']['item_count']) <= 0:
                 all_errors['errors']={"item count":['item count should not be a zero']}
             if int(data['line_items']['selling_price']) <= 0:
-                all_errors['errors']={"item count":['item count should not be a zero']}
+                all_errors['errors']={"selling price":['selling  price should not be a zero']}
         
         return all_errors

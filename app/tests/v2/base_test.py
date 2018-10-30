@@ -34,6 +34,7 @@ class BaseTestCase(unittest.TestCase):
                                         data=json.dumps(data),
                                         content_type='application/json')
             data = json.loads(response.data)
+        
             self.token = "Bearer " + data['access_token']
 
             ''' create sample products '''

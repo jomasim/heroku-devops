@@ -11,9 +11,9 @@ class SaleTestCase(BaseTestCase):
             'id': '1', 
             'date_created': '12/7/2008', 
             'user': 'attendant1',
-            'line_items':{
+            'line_item':{
                     'product_id':'1',
-                    'item_count':'2',
+                    'item_count':'0',
                     'selling_price':'1200'
             }
         }
@@ -21,4 +21,4 @@ class SaleTestCase(BaseTestCase):
         response=self.post('api/v2/sales/',new_sale)
         self.assertEqual(response.mimetype,'application/json')   
         self.assertEqual(response.status_code,201)
-        self.assertEqual(json.loads(response.data),{'message':'sale record created successfully'})
+        self.assertEqual(json.loads(response.data),{'message':'sale created successfully'})
