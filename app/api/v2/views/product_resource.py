@@ -8,8 +8,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 class ProductController(Resource):
     @jwt_required
     def get(self, product_id=None):
-        if self.get_all_products(product_id):
-            return make_response(jsonify({'products': self.get_all_products(product_id)}), 200)
+        if not product_id:
+            return make_response(jsonify({'products': Product.get()}), 200)
         else:
 
             ''' search for product  using product_id '''
@@ -34,7 +34,7 @@ class ProductController(Resource):
                           'price': 'required',
                           }
 
-        all_errors = self.get_validation_errors(data, request_schema)
+        all_errors = self.get_validation_errors(data,request_schema)
 
         if all_errors == None:
 
@@ -57,10 +57,10 @@ class ProductController(Resource):
                 return make_response(jsonify({"message": "product not found"}), 404)
 
     @jwt_required
-    def put(self, product_id=None):
+    def put(self,product_id=None):
 
         if not product_id:
-            return make_response(jsonify({"message": "productid is required"}), 422)
+            return make_response(jsonify({"message":"productid is required"}), 422)
 
         data = request.get_json()
         user = get_jwt_identity()
@@ -79,20 +79,16 @@ class ProductController(Resource):
         if validator.validate() == None:
 
             ''' update product '''
-            Product.update(data, product_id)
+            Product.update(data,product_id)
 
             return make_response(jsonify({'message': "product updated successfully"}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
-
-    def get_validation_errors(self, data, request_schema):
+    
+    def get_validation_errors(self,data,request_schema):
         validator = Request(data, request_schema)
         all_errors = validator.validate()
-        if all_errors == None and int(data['price']) <= 0:
-            all_errors = {}
-            all_errors['errors'] = {"price": ['price should not be a zero']}
+        if all_errors==None and int(data['price']) <= 0:
+            all_errors={}
+            all_errors['errors']={"price":['price should not be a zero']}
         return all_errors
-
-    def get_all_products(self, product_id):
-        if not product_id:
-           return Product.get()
