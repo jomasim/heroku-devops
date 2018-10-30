@@ -67,7 +67,19 @@ class SaleTestCase(BaseTestCase):
                           })
         self.assertEqual(response.mimetype, 'application/json')
 
-    def test_get_sales(self):
+    def test_get_all_sales(self):
+        response=self.get('/api/v2/sales/')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.mimetype,'application/json')
+
+    def test_get_specific_sale(self):
         response=self.get('/api/v2/sales/1')
         self.assertEqual(response.status_code,200)
+        self.assertEqual(response.mimetype,'application/json')
+
+    def test_get_non_exisiting_sale_record(self):
+        response=self.get('/api/v2/sales/10008')
+        self.assertEqual(response.status_code,404)
+        self.assertEqual(json.loads(response.data), {
+                         'message': 'sale record not found'})
         self.assertEqual(response.mimetype,'application/json')
