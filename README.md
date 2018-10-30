@@ -15,19 +15,23 @@ it uses postgres database and jwt authentication for all endpoints
 # Endpoints
 | Http Method | Route | Functionality |
 | ----------- | ----- | ------------- |
-| POST        | /api/v2/auth | user login|
+| POST        | /api/v2/login | user login|
 | POST        | /api/v2/user | create user|
 | POST        | /api/v2/products| create product |
 | PUT         | /api/v2/products/productId| update product |
-| DELETE      | /api/v2/products/productId| delete product |
+| GET      	  | /api/v2/products/productId| get product by id |
+| GET      	  | /api/v2/products/ | get all products|
+| POST        | /api/v2/sales/ | create sale|
+| GET         | /api/v2/sales/ | get all sales |
+| GET         | /api/v2/sales/sale_id | get sale by id|
 
 
 # Setup 
 
 clone repo from github
 
-- `$ git clone https://github.com/jomasim/store-api-v1.git`
-- `$ cd store-api-v1`
+- `$ git clone https://github.com/jomasim/store-api-v2.git`
+- `$ cd store-api-v2`
 - `$ git checkout dev `
 
 Create a virtual environment
@@ -46,30 +50,30 @@ setup  the .env file.
 
 `$ cp .env.example .env`
 
-production/stagiging database
+	production/stagiging database
 
-`DB_HOST` - The production/staging database host.
+		`DBHOST` - The production/staging database host.
 
-`DB_USER` - The production/staging database user.
+		`DBUSER` - The production/staging database user.
 
-`DB_NAME` - The production/staging database name.
+		`DBNAME` - The production/staging database name.
 
-`DB_PASS` - The production/staging database password.
+		`DBPASS` - The production/staging database password.
 
-testing db config(used when running tests)
+	testing db config(used when running tests)
 
-`TEST_DBHOST` - The testing database host.
+		`TEST_DBHOST` - The testing database host.
 
-`TEST_DBUSER` - The testing database user.
+		`TEST_DBUSER` - The testing database user.
 
-`TEST_DBNAME` - The testing database name.
+		`TEST_DBNAME` - The testing database name.
 
-`TEST_DBPASS` - The testing database password.
+		`TEST_DBPASS` - The testing database password.
 
 
-set jwt secret
+	setup jwt secret
 
-`JWT_SECCRET=$SECRET_KEY$` - A random key that is used by the application to generate secure        authentication tokens(jwt).
+		`JWT_SECCRET=$SECRET_KEY$` - A random key that is used by the application to generate secure        authentication tokens(jwt).
 
 
 Running app
@@ -77,7 +81,7 @@ Running app
 `$ python3 run.py `
 
 # Running tests
-`$ pytest tests`
+`$ pytest tests -v`
 
 # Documentation
 
