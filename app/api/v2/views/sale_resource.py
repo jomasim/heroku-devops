@@ -28,8 +28,8 @@ class SalesController(Resource):
         data['created_by'] = user
 
         all_errors = self.get_validation_errors(data)
-
-        if all_errors == None:
+    
+        if not all_errors:
 
             ''' create sale '''
             Sale.create(data)
@@ -54,14 +54,14 @@ class SalesController(Resource):
         ''' get all general validation errors  '''
 
         all_errors =  line_items.validate()
-        
-        if all_errors==None:
+
+        if  all_errors==None:
 
             all_errors={}
 
             if int(data['line_items']['item_count']) <= 0:
                 all_errors['errors']={"item count":['item count should not be a zero']}
             if int(data['line_items']['selling_price']) <= 0:
-                all_errors['errors']={"selling price":['selling  price should not be a zero']}
-        
+                all_errors['errors']={"selling price":['selling price should not be a zero']}
+       
         return all_errors
