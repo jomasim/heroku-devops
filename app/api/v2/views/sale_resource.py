@@ -27,7 +27,7 @@ class SalesController(Resource):
 
         data['created_by'] = user
 
-        all_errors = self.get_validation_errors(data)
+        all_errors = self.__get_line_item_errors(data)
     
         if not all_errors:
 
@@ -44,13 +44,8 @@ class SalesController(Resource):
         line_items_schema = {'product_id': 'required',
         'item_count':'required','selling_price':'required'
         }
-
-        try:
-            line_items=Request(data['line_items'], line_items_schema)
-        except Exception as e:
-            line_items=Request([], line_items_schema)
-            print(str(e) + " key error")
-        
+    
+        line_items=Request(data, line_items_schema)
         ''' get all general validation errors  '''
 
         all_errors =  line_items.validate()
@@ -59,9 +54,23 @@ class SalesController(Resource):
 
             all_errors={}
 
-            if int(data['line_items']['item_count']) <= 0:
+            if int(data['item_count']) <= 0:
                 all_errors['errors']={"item count":['item count should not be a zero']}
-            if int(data['line_items']['selling_price']) <= 0:
+            if int(data['selling_price']) <= 0:
                 all_errors['errors']={"selling price":['selling price should not be a zero']}
        
         return all_errors
+
+    def __get_line_item_errors(self,data):
+        errors={}
+        try:
+            line_items = data['line_items']
+            for i, line_item in enumerate(line_items):
+                errors = self.get_validation_errors(line_item)
+                print(errors)
+                if errors:
+                    break
+        except Exception as e:
+            print(str(e)+"key error")
+            errors = self.get_validation_errors([])
+        return errors

@@ -21,11 +21,11 @@ sample_product = {'name': 'trouser', 'category': 'apparel',
                                'gender': 'male'
                            }, 'price': '1500'}
 sale = {
-        'line_items': {
+        'line_items': [{
                     'product_id': '1',
                     'item_count': '2',
                     'selling_price': '1700'
-                }
+                }]
         }
 
 class BaseTestCase(unittest.TestCase):

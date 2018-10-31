@@ -7,12 +7,18 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'line_items': {
+            'line_items':[{
                     'product_id': '1',
-                    'item_count': '3',
+                    'item_count': '2',
                     'selling_price': '1200'
+            },
+            {
+                    'product_id': '1',
+                    'item_count': '2',
+                    'selling_price': '1200'
+            },
+            ]
             }
-        }
 
         response = self.post('api/v2/sales/', new_sale)
         self.assertEqual(response.mimetype, 'application/json')
@@ -24,11 +30,17 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'line_items': {
+            'line_items':[{
                     'product_id': '1',
                     'item_count': '0',
                     'selling_price': '1200'
-            }
+            },
+            {
+                    'product_id': '1',
+                    'item_count': '0',
+                    'selling_price': '1200'
+            },
+            ]
         }
 
         response = self.post('api/v2/sales/', new_sale)
@@ -42,11 +54,17 @@ class SaleTestCase(BaseTestCase):
         ''' sample sale record '''
 
         new_sale = {
-            'line_items': {
+            'line_items':[{
                     'product_id': '1',
                     'item_count': '2',
                     'selling_price': '0'
-            }
+            },
+            {
+                    'product_id': '1',
+                    'item_count': '2',
+                    'selling_price': '0'
+            },
+            ]
         }
 
         response = self.post('api/v2/sales/', new_sale)
