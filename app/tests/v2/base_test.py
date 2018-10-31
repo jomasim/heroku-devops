@@ -19,7 +19,7 @@ sample_product = {'name': 'trouser', 'category': 'apparel',
                                'color': 'grey',
                                'size': '35',
                                'gender': 'male'
-                           }, 'price': '1500'}
+                           }, 'price': '1500','quantity':"6"}
 sale = {
         'line_items': [{
                     'product_id': '1',

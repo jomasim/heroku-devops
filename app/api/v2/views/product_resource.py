@@ -28,10 +28,11 @@ class ProductController(Resource):
 
         data['created_by'] = user
 
-        request_schema = {'name': 'required',
-                          'category': 'required',
+        request_schema = {'name': 'required|string',
+                          'category': 'required|string',
                           'description': 'required',
                           'price': 'required',
+                          'quantity':'required'
                           }
 
         all_errors = self.get_validation_errors(data,request_schema)
@@ -69,10 +70,11 @@ class ProductController(Resource):
 
         data['created_by'] = user
 
-        request_schema = {'name': 'required',
-                          'category': 'required',
-                          'description': 'required',
+        request_schema = {'name': 'required|string',
+                          'category': 'required|string',
+                          'description': 'required|string',
                           'price': 'required',
+                          'quantity':'required'
                           }
 
         validator = Request(data, request_schema)
