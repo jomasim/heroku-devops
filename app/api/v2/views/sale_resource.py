@@ -39,6 +39,8 @@ class SalesController(Resource):
             return make_response(jsonify(all_errors), 422)
             
 
+    ''' gets errors for a single line item in sale '''
+
     def get_validation_errors(self,data):
 
         line_items_schema = {'product_id': 'required',
@@ -61,6 +63,11 @@ class SalesController(Resource):
        
         return all_errors
 
+    ''' 
+    return all errors for a single by looping 
+    through all items sold
+    '''
+    
     def __get_line_item_errors(self,data):
         errors={}
         try:
