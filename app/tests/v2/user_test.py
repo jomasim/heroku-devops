@@ -16,12 +16,7 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(response.mimetype, 'application/json')
 
     def test_for_existing_user(self):
-        existing_user = {
-            'name': 'jane doe',
-            'email': 'janedoe@gmail.com',
-            'username': 'jane',
-            'password':'123456'
-        }
+        existing_user = self.sample_user
         response = self.post('/api/v2/user', existing_user)
         self.assertEqual(response.status_code, 409)
         self.assertEqual(json.loads(response.data), {
