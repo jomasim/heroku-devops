@@ -3,7 +3,7 @@ from flask_restful import Resource
 from app.api.v2.request import Request
 from app.api.v2.models.product import Product
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from app.api.v2.views.admin import admin_required
 
 class ProductController(Resource):
     @jwt_required
@@ -19,7 +19,7 @@ class ProductController(Resource):
             else:
                 return make_response(jsonify({'product': Product.get_by_id(product_id)}), 200)
 
-    @jwt_required
+    @admin_required
     def post(self):
         data = request.get_json()
         user = get_jwt_identity()

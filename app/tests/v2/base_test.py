@@ -2,101 +2,79 @@ import json
 import unittest
 from run import app
 from app.schema.db_utils import create_db, drop_db
+from app.api.v2.models.user import User
+from app.api.v2.models.product import Product
+from app.api.v2.models.sale import Sale
 
+
+
+sample_user = {
+            'name': 'support',
+            'email': 'support@gmail.com',
+            'username': 'support',
+            'password': '123456'
+        }
+sample_product = {'name': 'trouser', 'category': 'apparel',
+                           'description': {
+                               'color': 'grey',
+                               'size': '35',
+                               'gender': 'male'
+                           }, 'price': '1500'}
+sale = {
+        'line_items': {
+                    'product_id': '1',
+                    'item_count': '2',
+                    'selling_price': '1700'
+                }
+        }
 
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client(self)
+        self.sample_user=sample_user
+        self.sample_product=sample_product
+        self.sample_sale=sale
+
+        # create database tabless
         create_db()
-        ''' create sample login user in test db '''
 
-        create_user_url = "/api/v2/user"
-        auth_url = "/api/v2/login"
-        product_url="/api/v2/products"
-        sale_url="/api/v2/sales"
-
-        sample_user = {
-            'name': 'jane doe',
-            'email': 'janedoe@gmail.com',
-            'username': 'jane',
-            'password': '123456'
-        }
-
-        response = self.client.post(create_user_url,
-                                    data=json.dumps(sample_user),
-                                    content_type='application/json')
-        if response.status_code == 201:
+        login_url = "/api/v2/login"
+        product_url = "/api/v2/products"
+        sale_url = "/api/v2/sales"
+        
+        ''' create defualt admin '''
+        User.create_admin(self.sample_user)
+        if User.exists(sample_user):
 
             ''' generate token from sample user if creation was successful '''
 
-            data = {"email": "janedoe@gmail.com", "password": "123456"}
+            data = {"email": "support@gmail.com", "password": "123456"}
 
-            response = self.client.post(auth_url,
+            response = self.client.post(login_url,
                                         data=json.dumps(data),
                                         content_type='application/json')
             data = json.loads(response.data)
         
             self.token = "Bearer " + data['access_token']
 
-            ''' create sample products '''
 
-            'sample product 1'
+            ''' create sample product '''
+            self.client.post(
+                product_url,
+                data=json.dumps(sample_product),
+                content_type='application/json',
+                headers={"Authorization": self.token}
+            )
 
-            product = {'id': '1', 'name': 'trouser', 'category': 'apparel',
-                           'description': {
-                               'color': 'grey',
-                               'size': '35',
-                               'gender': 'male'
-                           }, 'price': '1500'}
-        
-            self.client.post(product_url,
-                    data=json.dumps(product),
-                    content_type='application/json',
-                    headers={"Authorization": self.token})
+            ''' create sample sale '''
+            self.client.post(
+                sale_url,
+                data=json.dumps(self.sample_sale),
+                content_type='application/json',
+                headers={"Authorization": self.token}
+            )
 
-            ''' sample product 2 '''
-
-            product2 = {'id': '2', 'name': 'ladies jeans', 'category': 'apparel',
-                           'description': {
-                               'color': 'grey',
-                               'size': '37',
-                               'gender': 'female'
-                           }, 'price': '1800'}
-
-            self.client.post(product_url,
-                    data=json.dumps(product2),
-                    content_type='application/json',
-                    headers={"Authorization": self.token})
-
-            sale1 = {
-
-                'line_items': {
-                    'product_id': '1',
-                    'item_count': '2',
-                    'selling_price': '1700'
-                }
-            }
-
-            self.client.post(sale_url,
-                            data=json.dumps(sale1),
-                            content_type='application/json',
-                            headers={"Authorization": self.token})
-
-            sale2 = {
-
-                    'line_items': {
-                        'product_id': '1',
-                        'item_count': '2',
-                        'selling_price': '1700'
-                    }
-                }
             
-
-            self.client.post(sale_url,
-                            data=json.dumps(sale2),
-                            content_type='application/json',
-                            headers={"Authorization": self.token})
-        
 
     def get(self, url):
         return self.client.get(url, headers={"Authorization": self.token})

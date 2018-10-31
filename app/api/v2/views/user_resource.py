@@ -24,7 +24,7 @@ class UserController(Resource):
 
                 ''' append default role '''
 
-                data['role'] = "0"
+                data['role'] = "normal"
 
                 ''' save user '''
                 User.create(data)

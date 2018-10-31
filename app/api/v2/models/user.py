@@ -16,7 +16,15 @@ class User(object):
                 "VALUES('%s','%s', '%s', '%s', '%s')" % (
                     data['name'],data['username'],data['email'],hashed,data['role'])
         cur.execute(query)
-        
+
+    @staticmethod
+    def create_admin(data):
+        hashed=generate_password_hash(data['password'])
+        query = "INSERT INTO users (name,username,email,password,role)" \
+                "VALUES('%s','%s', '%s', '%s', '%s')" % (
+                    data['name'],data['username'],data['email'],hashed,"admin")
+        cur.execute(query)
+
     @staticmethod
     def exists(data):
         if data['email']:
@@ -32,4 +40,10 @@ class User(object):
             cur.execute(query)
             return cur.fetchone()
             
+    @staticmethod
+    def get_by_id(user_id):
+        if user_id:
+            query="SELECT * FROM users WHERE id = '%s';" % user_id
+            cur.execute(query)
+            return cur.fetchone()
 

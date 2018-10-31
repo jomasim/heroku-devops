@@ -7,6 +7,8 @@ from app.api.v2.views.user_resource import UserController
 from app.api.v2.views.auth_resource import AuthController
 from app.api.v2.views.product_resource import ProductController
 from app.api.v2.views.sale_resource import SalesController
+from app.api.v2.models.user import User
+
 
 api_blueprint = Blueprint("store-api", __name__, url_prefix='/api/v2')
 jwt = JWTManager()
@@ -37,11 +39,20 @@ def create_app(config_setting):
     api.add_resource(SalesController, '/sales/',
                      strict_slashes=False, endpoint='sales')
 
-
     api.add_resource(SalesController, '/sales/<int:sale_id>/',
                      strict_slashes=False, endpoint='get_all_sales')
-                     
 
     app.register_blueprint(api_blueprint)
 
     return app
+
+
+@jwt.user_claims_loader
+def add_claims_to_access_token(identity):
+    user_id=identity
+    user=User.get_by_id(user_id)
+    if user:
+        if user['role'] == 'admin':
+            return {'roles': 'admin'}
+        else:
+            return {'roles': 'normal'}

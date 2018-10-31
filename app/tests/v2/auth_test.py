@@ -5,19 +5,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class TestAuth(BaseTestCase):
     def test_for_get_user_identity(self):
-        user = User.get_by_email("janedoe@gmail.com")
+        user = User.get_by_email(self.sample_user['email'])
         self.assertTrue(user)
-        self.assertEqual(user['name'], "jane doe")
+        self.assertEqual(user['name'], self.sample_user['name'])
 
     def test_match_password(self):
-        user = User.get_by_email("janedoe@gmail.com")
+        user = User.get_by_email(self.sample_user['email'])
         password = "123456"
         self.assertTrue(user)
         self.assertTrue(check_password_hash(user['password'], password))
 
     def test_login(self):
-        user={"email": "janedoe@gmail.com",
-            "password": "123456"
+        user={"email": self.sample_user['email'],
+            "password":self.sample_user['password'],
                 }
         response = self.post('/api/v2/login', data=user)
         self.assertTrue(response)
