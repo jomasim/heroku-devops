@@ -56,7 +56,7 @@ class ProductTestCase(BaseTestCase):
 
     def test_update_empty_data(self):
         response = self.put('/api/v2/products/2', data={})
-        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.status_code, 201)
 
     def test_update_product(self):
         update = {'id': '2', 'name': 'shirt', 'category': 'apparel', 'description': {

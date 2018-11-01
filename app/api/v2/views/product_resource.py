@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api.v2.views.admin import admin_required
 
 ''' collect all key errors '''
-key_errors={}
+key_errors=None
 
 
 class ProductController(Resource):
@@ -70,18 +70,19 @@ class ProductController(Resource):
         data = request.get_json()
         user = get_jwt_identity()
         
-        if data and not Product.get_by_id(product_id):
+        if data != None and not Product.get_by_id(product_id):
             return make_response(jsonify({"message": "product not found"}), 404)
 
         ''' append user '''
-
         data['created_by'] = user
+    
         ''' update product '''
         updated_list=self.get_updated_list(data,product_id)
         Product.update(updated_list,product_id)
         return make_response(jsonify({'message': "product updated successfully"}), 201)
 
 
+        
         
     def get_validation_errors(self,data,request_schema):
         validator = Request(data, request_schema)
@@ -94,8 +95,5 @@ class ProductController(Resource):
     def get_updated_list(self,data,product_id):
         existing=Product.get_by_id(product_id)
         for key in set(existing) and set(data):
-            try:
-                existing[key]=data[key]
-            except Exception as e:
-                print(str(e))
+            existing[key]=data[key]
         return existing
