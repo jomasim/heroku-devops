@@ -9,13 +9,14 @@ from app.api.v2.views.product_resource import ProductController
 from app.api.v2.views.sale_resource import SalesController
 from app.api.v2.views.logout_resource import Logout
 from app.api.v2.models.user import User
+from app.api.v2.black_list import get_black_list
 
 
 api_blueprint = Blueprint("store-api", __name__, url_prefix='/api/v2')
 jwt = JWTManager()
 
 ''' store revoved tokens '''
-blacklist = set()
+blacklist = get_black_list()
 
 ''' setting api config '''
 
@@ -38,7 +39,7 @@ def create_app(config_setting):
                      strict_slashes=False, endpoint='login')
 
     api.add_resource(Logout, '/logout/',
-                     strict_slashes=False, endpoint='login')
+                     strict_slashes=False, endpoint='logout')
 
     api.add_resource(ProductController, '/products/',
                      strict_slashes=False, endpoint='products')
@@ -71,3 +72,6 @@ def add_claims_to_access_token(identity):
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
+
+def add_to_blacklist(jti):
+    return blacklist.add(jti)

@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token, jwt_required
 import datetime
 
 
+
 class AuthController(Resource):
 
     def post(self):

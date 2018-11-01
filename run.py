@@ -1,7 +1,7 @@
 from app import create_app
 from app.schema.db_utils import create_db
 from app.api.v2.models.user import User
-
+from app import blacklist
 admin = {
             'name': 'support',
             'email': 'support@gmail.com',
@@ -9,8 +9,8 @@ admin = {
             'password': '123456'
         }
 
-
 app=create_app('development')
+
 
 if __name__ == '__main__':
 
