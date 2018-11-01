@@ -35,6 +35,9 @@ class SalesController(Resource):
             ''' create sale '''
             Sale.create(data)
 
+            ''' update stock '''
+            self.__update_stock(data)
+
             return make_response(jsonify({'message': "sale created successfully"}), 201)
         else:
             return make_response(jsonify(all_errors), 422)
@@ -104,5 +107,9 @@ class SalesController(Resource):
     def __update_stock(self,data):
             line_items = data['line_items']
             for i, line_item in enumerate(line_items):
-                pass
+                product=Product.get_by_id(line_item['product_id'])
+                new_stock=int(product['quantity'])-int(line_item['item_count'])
+                product['quantity']=new_stock
+                ''' update product quantity '''
+                Product.update(product,line_item['product_id'])
      
