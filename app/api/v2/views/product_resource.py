@@ -5,6 +5,10 @@ from app.api.v2.models.product import Product
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api.v2.views.admin import admin_required
 
+''' collect all key errors '''
+key_errors={}
+
+
 class ProductController(Resource):
     @jwt_required
     def get(self, product_id=None):
@@ -72,23 +76,13 @@ class ProductController(Resource):
         ''' append user '''
 
         data['created_by'] = user
+        ''' update product '''
+        updated_list=self.get_updated_list(data,product_id)
+        Product.update(updated_list,product_id)
+        return make_response(jsonify({'message': "product updated successfully"}), 201)
 
-        request_schema = {'name': 'string',
-                          'category': 'string',
-                          'description': '',
-                          'price': '',
-                          'quantity':''
-                          }
 
-        validator = Request(data, request_schema)
-        if validator.validate() == None:
-            ''' update product '''
-            updated_list=self.get_updated_list(data,product_id)
-            Product.update(updated_list,product_id)
-            return make_response(jsonify({'message': "product updated successfully"}), 201)
-        else:
-            return make_response(jsonify(validator.validate()), 422)
-    
+        
     def get_validation_errors(self,data,request_schema):
         validator = Request(data, request_schema)
         all_errors = validator.validate()
@@ -100,5 +94,8 @@ class ProductController(Resource):
     def get_updated_list(self,data,product_id):
         existing=Product.get_by_id(product_id)
         for key in set(existing) and set(data):
-            existing[key]=data[key]
+            try:
+                existing[key]=data[key]
+            except Exception as e:
+                print(str(e))
         return existing
