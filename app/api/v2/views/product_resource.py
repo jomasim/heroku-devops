@@ -56,7 +56,7 @@ class ProductController(Resource):
         else:
             return make_response(jsonify(all_errors), 422)
 
-    @jwt_required
+    @admin_required
     def delete(self, product_id=None):
         if not product_id:
               return make_response(jsonify({"message": "productid is required"}), 422)
@@ -67,7 +67,7 @@ class ProductController(Resource):
             else:
                 return make_response(jsonify({"message": "product not found"}), 404)
 
-    @jwt_required
+    @admin_required
     def put(self,product_id=None):
 
         if not product_id:
