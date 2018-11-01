@@ -72,7 +72,7 @@ class ProductController(Resource):
 
         request_schema = {'name': 'required|string',
                           'category': 'required|string',
-                          'description': 'required|string',
+                          'description': 'required',
                           'price': 'required',
                           'quantity':'required'
                           }

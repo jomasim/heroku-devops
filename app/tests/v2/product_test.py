@@ -8,7 +8,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'black',
             'size': '35',
             'gender': 'male'
-        }, 'price': '1200'}
+        }, 'price': '1200','quantity':"8"}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.data), {
@@ -20,7 +20,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'black',
             'size': '35',
             'gender': 'male'
-        }, "price": ""}
+        }, "price": "",'quantity':"8"}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 422)
         self.assertEqual(json.loads(response.data), {'errors': {'price': ['price is required']}})
@@ -31,7 +31,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'black',
             'size': '35',
             'gender': 'male'
-        }, "price": "-34"}
+        }, "price": "-34",'quantity':"8"}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 422)
         self.assertEqual(json.loads(response.data), {'errors': {'price': ['price should not be a zero']}})
@@ -63,7 +63,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'light grey',
             'size': '27',
             'gender': 'male'
-        }, 'price': '1750'}
+        }, 'price': '1750','quantity':"8"}
         response = self.put('/api/v2/products/2', data=update)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.mimetype, 'application/json')
@@ -73,7 +73,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'light grey',
             'size': '27',
             'gender': 'male'
-        }, 'price': '1750'}
+        }, 'price': '1750','quantity':"8"}
         response = self.put('/api/v2/products/', data=update)
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.mimetype, 'application/json')

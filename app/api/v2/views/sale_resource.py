@@ -2,6 +2,7 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource
 from app.api.v2.request import Request
 from app.api.v2.models.sale import Sale
+from app.api.v2.models.product import Product
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 class SalesController(Resource):
@@ -53,31 +54,50 @@ class SalesController(Resource):
         all_errors =  line_items.validate()
 
         if  all_errors==None:
-
-            all_errors={}
-
-            if int(data['item_count']) <= 0:
-                all_errors['errors']={"item count":['item count should not be a zero']}
-            if int(data['selling_price']) <= 0:
-                all_errors['errors']={"selling price":['selling price should not be a zero']}
-       
+            all_errors=self.__check_sale_errors(data)
         return all_errors
 
     ''' 
     return all errors for a single by looping 
     through all items sold
     '''
-    
+
     def __get_line_item_errors(self,data):
         errors={}
         try:
             line_items = data['line_items']
             for i, line_item in enumerate(line_items):
                 errors = self.get_validation_errors(line_item)
-                print(errors)
                 if errors:
                     break
         except Exception as e:
             print(str(e)+"key error")
             errors = self.get_validation_errors([])
         return errors
+
+    def __check_sale_errors(self, data):
+         all_errors = {}
+         ''' check if product exists '''
+         if not Product.get_by_id(data['product_id']):
+             all_errors['errors'] = {"product": ['product id does not exist']}
+             return all_errors
+         if int(data['item_count']) <= 0:
+                    all_errors['errors'] = {"item count": [
+                        'item count should not be a zero']}
+         if int(data['selling_price']) <= 0:
+                    all_errors['errors'] = {"selling price": [
+                        'selling price should not be a zero']}
+         if int(data['item_count']) <= 0:
+                    all_errors['errors'] = {"item count": [
+                     'item count should not be a zero']}
+
+         ''' get existing stock '''
+
+         product=Product.get_by_id(data['product_id'])
+
+         ''' confirm requested vs what is in stock '''
+         if int(data['item_count']) > int(product['quantity']):
+             message="cant sell more than in stock for product id: %s" %(product['id'])
+             all_errors['errors'] = {"stock": [message]} 
+         return all_errors
+

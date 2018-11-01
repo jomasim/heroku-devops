@@ -12,9 +12,9 @@ class Product(object):
     @staticmethod
     def create(data):
 
-        query = "INSERT INTO products (name,category,description,price,created_by)" \
-                "VALUES('%s','%s', '%s', '%s', '%s')" % (
-                    data['name'], data['category'], data['price'], json.dumps(data['description']), data['created_by'])
+        query = "INSERT INTO products (name,category,description,price,quantity,created_by)" \
+                "VALUES('%s','%s', '%s', '%s','%s', '%s')" % (
+                    data['name'], data['category'],json.dumps(data['description']),data['price'],data['quantity'], data['created_by'])
         cur.execute(query)
 
     @staticmethod
