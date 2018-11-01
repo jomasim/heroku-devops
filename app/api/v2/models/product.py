@@ -1,10 +1,9 @@
 from app.api.v2.database import DBConnection
-from psycopg2 import sql
-import psycopg2.extras
+from psycopg2 import sql,extras
 import json
 
 
-cur = DBConnection.get_connection().cursor(cursor_factory = psycopg2.extras.DictCursor)
+cur = DBConnection.get_connection().cursor(cursor_factory = extras.RealDictCursor)
 
 class Product(object):
 
@@ -29,7 +28,10 @@ class Product(object):
         if product_id:
             query = "SELECT * FROM products WHERE id = '%s';" % product_id
             cur.execute(query)
-            return cur.fetchone()
+            product=cur.fetchone()
+            if product:
+                product['description'] = json.loads(product['description'])
+            return product
         return False
 
     ''' returns all products '''
@@ -38,7 +40,10 @@ class Product(object):
     def get():
         query = "SELECT * FROM products"
         cur.execute(query)
-        return cur.fetchall()
+        products=cur.fetchall()
+        for i, product in enumerate(products):
+            products[i]['description'] = json.loads(product['description'])
+        return products
 
     @staticmethod
     def update(data,product_id):
