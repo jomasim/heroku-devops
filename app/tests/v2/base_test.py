@@ -20,6 +20,13 @@ sample_product = {'name': 'trouser', 'category': 'apparel',
                                'size': '35',
                                'gender': 'male'
                            }, 'price': '1500','quantity':"6"}
+
+sample_product2 = {'name': 'female jacket', 'category': 'apparel',
+                           'description': {
+                               'color': 'blue',
+                               'size': '28',
+                               'gender': 'female'
+                           },  'price': '1300','quantity':"6"}
 sale = {
         'line_items': [{
                     'product_id': '1',
@@ -27,14 +34,21 @@ sale = {
                     'selling_price': '1700'
                 }]
         }
-
+sale2 = {
+        'line_items': [{
+                    'product_id': '1',
+                    'item_count': '1',
+                    'selling_price': '1700'
+                }]
+        }
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client(self)
         self.sample_user=sample_user
         self.sample_product=sample_product
+        self.sample_product2=sample_product2
         self.sample_sale=sale
-
+        self.sample_sale2=sale2
         # create database tabless
         create_db()
 
@@ -58,15 +72,20 @@ class BaseTestCase(unittest.TestCase):
             self.token = "Bearer " + data['access_token']
 
 
-            ''' create sample product '''
+            ''' create sample products '''
             self.client.post(
                 product_url,
                 data=json.dumps(sample_product),
                 content_type='application/json',
                 headers={"Authorization": self.token}
             )
-
-            ''' create sample sale '''
+            self.client.post(
+                product_url,
+                data=json.dumps(sample_product2),
+                content_type='application/json',
+                headers={"Authorization": self.token}
+            )
+            ''' create sample sales '''
             self.client.post(
                 sale_url,
                 data=json.dumps(self.sample_sale),
@@ -74,7 +93,12 @@ class BaseTestCase(unittest.TestCase):
                 headers={"Authorization": self.token}
             )
 
-            
+            self.client.post(
+                sale_url,
+                data=json.dumps(self.sample_sale2),
+                content_type='application/json',
+                headers={"Authorization": self.token}
+            )
 
     def get(self, url):
         return self.client.get(url, headers={"Authorization": self.token})

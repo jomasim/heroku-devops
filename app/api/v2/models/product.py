@@ -42,8 +42,8 @@ class Product(object):
 
     @staticmethod
     def update(data,product_id):
-        query="UPDATE products SET name='%s',category='%s',description='%s',price='%s',created_by='%s' WHERE id='%s' " %(
-        data['name'], data['category'],json.dumps(data['description']),data['price'],  data['created_by'],product_id)
+        query="UPDATE products SET name='%s',category='%s',description='%s',price='%s',quantity='%s',created_by='%s' WHERE id='%s' " %(
+        data['name'], data['category'],json.dumps(data['description']),data['price'],data['quantity'], data['created_by'],product_id)
         return cur.execute(query)
         
        

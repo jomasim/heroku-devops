@@ -101,3 +101,8 @@ class SalesController(Resource):
              all_errors['errors'] = {"stock": [message]} 
          return all_errors
 
+    def __update_stock(self,data):
+            line_items = data['line_items']
+            for i, line_item in enumerate(line_items):
+                pass
+     
