@@ -29,7 +29,7 @@ class AuthController(Resource):
                 return make_response(jsonify({"message": "login successful",
                                                   "access_token": token}), 200)
             else:                                    
-                return make_response(jsonify({"message": "invalid  credentials"}), 401)
+                return make_response(jsonify({"message": "invalid credentials"}), 401)
         else:
             return make_response(jsonify(validator.validate()), 422)
 

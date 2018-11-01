@@ -33,7 +33,7 @@ class TestAuth(BaseTestCase):
         response = self.post('/api/v2/login', data=user)
         self.assertTrue(response)
         self.assertEqual(json.loads(response.data), {
-                         'message': 'invalid login'})
+                         'message': 'invalid credentials'})
         self.assertEqual(response.status_code,401)
 
     def test_login_with_empty_data(self):
