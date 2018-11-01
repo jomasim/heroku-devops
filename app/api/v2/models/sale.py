@@ -13,7 +13,7 @@ class Sale():
 
         query = "INSERT INTO sales (created_by,line_items)" \
                 "VALUES('%s', '%s')" % (data['created_by'],json.dumps(data['line_items']))
-        cur.execute(query)
+        return cur.execute(query)
     
     @staticmethod
     def get_by_id(sale_id):

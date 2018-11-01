@@ -5,6 +5,10 @@ from app.api.v2.models.product import Product
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api.v2.views.admin import admin_required
 
+''' collect all key errors '''
+key_errors=None
+
+
 class ProductController(Resource):
     @jwt_required
     def get(self, product_id=None):
@@ -28,10 +32,11 @@ class ProductController(Resource):
 
         data['created_by'] = user
 
-        request_schema = {'name': 'required',
-                          'category': 'required',
+        request_schema = {'name': 'required|string',
+                          'category': 'required|string',
                           'description': 'required',
                           'price': 'required',
+                          'quantity':'required'
                           }
 
         all_errors = self.get_validation_errors(data,request_schema)
@@ -64,27 +69,21 @@ class ProductController(Resource):
 
         data = request.get_json()
         user = get_jwt_identity()
+        
+        if data != None and not Product.get_by_id(product_id):
+            return make_response(jsonify({"message": "product not found"}), 404)
 
         ''' append user '''
-
         data['created_by'] = user
-
-        request_schema = {'name': 'required',
-                          'category': 'required',
-                          'description': 'required',
-                          'price': 'required',
-                          }
-
-        validator = Request(data, request_schema)
-        if validator.validate() == None:
-
-            ''' update product '''
-            Product.update(data,product_id)
-
-            return make_response(jsonify({'message': "product updated successfully"}), 201)
-        else:
-            return make_response(jsonify(validator.validate()), 422)
     
+        ''' update product '''
+        updated_list=self.get_updated_list(data,product_id)
+        Product.update(updated_list,product_id)
+        return make_response(jsonify({'message': "product updated successfully"}), 201)
+
+
+        
+        
     def get_validation_errors(self,data,request_schema):
         validator = Request(data, request_schema)
         all_errors = validator.validate()
@@ -92,3 +91,9 @@ class ProductController(Resource):
             all_errors={}
             all_errors['errors']={"price":['price should not be a zero']}
         return all_errors
+
+    def get_updated_list(self,data,product_id):
+        existing=Product.get_by_id(product_id)
+        for key in set(existing) and set(data):
+            existing[key]=data[key]
+        return existing

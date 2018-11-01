@@ -15,6 +15,7 @@ create table if not exists products(
     category varchar not null,
     price varchar not null,
     description text not null,
+    quantity int not null default 0,
     created_by integer not null references users(id),
     create_at timestamp not null default now(),
     updated_at timestamp default current_timestamp

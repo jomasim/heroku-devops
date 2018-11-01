@@ -34,7 +34,7 @@ class AuthController(Resource):
 
     @staticmethod
     def __generate_token(user_id):
-        exp = datetime.timedelta(minutes=20)
+        exp = datetime.timedelta(minutes=30)
         return create_access_token(user_id, exp)
 
     @staticmethod
