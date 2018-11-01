@@ -43,8 +43,14 @@ class ProductController(Resource):
 
         if all_errors == None:
 
-            ''' create product '''
-            Product.create(data)
+            product=Product.get_by_name(data['name'])
+            ''' check if product with the same name exists '''
+            if product:
+                message="product already exists with id: '%s' consider updating the quantity" % product['id']
+                return make_response(jsonify({'message': message}), 409)
+            else:
+                ''' create product '''
+                Product.create(data)
 
             return make_response(jsonify({'message': "product created successfully"}), 201)
         else:
@@ -57,7 +63,7 @@ class ProductController(Resource):
         else:
             if Product.get_by_id(product_id) != None:
                 Product.delete_by_Id(product_id)
-                return make_response(jsonify({"message": "product deleted successfully"}), 204)
+                return make_response(jsonify({"message": "product deleted successfully"}), 200)
             else:
                 return make_response(jsonify({"message": "product not found"}), 404)
 

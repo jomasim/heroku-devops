@@ -32,7 +32,7 @@ def create_app(config_setting):
 
 
     ''' setting api blueprint  '''
-    api = Api(api_blueprint)
+    api = Api(api_blueprint, catch_all_404s=True)
     api.add_resource(UserController, '/user/',
                      strict_slashes=False, endpoint='post_user')
     api.add_resource(AuthController, '/login/',
