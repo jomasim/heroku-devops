@@ -73,17 +73,18 @@ class ProductController(Resource):
 
         data['created_by'] = user
 
-        request_schema = {'name': 'required|string',
-                          'category': 'required|string',
-                          'description': 'required',
-                          'price': 'required',
-                          'quantity':'required'
+        request_schema = {'name': 'string',
+                          'category': 'string',
+                          'description': '',
+                          'price': '',
+                          'quantity':''
                           }
 
         validator = Request(data, request_schema)
         if validator.validate() == None:
             ''' update product '''
-            Product.update(data,product_id)
+            updated_list=self.get_updated_list(data,product_id)
+            Product.update(updated_list,product_id)
             return make_response(jsonify({'message': "product updated successfully"}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
@@ -95,3 +96,9 @@ class ProductController(Resource):
             all_errors={}
             all_errors['errors']={"price":['price should not be a zero']}
         return all_errors
+
+    def get_updated_list(self,data,product_id):
+        existing=Product.get_by_id(product_id)
+        for key in set(existing) and set(data):
+            existing[key]=data[key]
+        return existing
