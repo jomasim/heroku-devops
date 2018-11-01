@@ -16,6 +16,7 @@ it uses postgres database and jwt authentication for all endpoints
 | Http Method | Route | Functionality |
 | ----------- | ----- | ------------- |
 | POST        | /api/v2/login | user login|
+| DELETE      | /api/v2/logout| revoking user token|
 | POST        | /api/v2/user | create user|
 | POST        | /api/v2/products| create product |
 | PUT         | /api/v2/products/productId| update product |
@@ -30,25 +31,25 @@ it uses postgres database and jwt authentication for all endpoints
 
 clone repo from github
 
-- `$ git clone https://github.com/jomasim/store-api-v2.git`
-- `$ cd store-api-v2`
-- `$ git checkout dev `
+- ```$ git clone https://github.com/jomasim/store-api-v2.git```
+- ```$ cd store-api-v2```
+- ```$ git checkout dev```
 
 Create a virtual environment
 
-`$ python3 -m venv venv`
+```$ python3 -m venv venv```
 
 Activate the virtual environment
 
-`$ . venv/bin/activate`
+```$ . venv/bin/activate```
 
 Install project dependencies
 
-`$ pip install -r requirements.txt`
+```$ pip install -r requirements.txt```
 
 setup  the .env file.
 
-`$ cp .env.example .env`
+```$ cp .env.example .env```
 
 	production/stagiging database
 
@@ -73,15 +74,16 @@ setup  the .env file.
 
 	setup jwt secret
 
-		`JWT_SECCRET=$SECRET_KEY$` - A random key that is used by the application to generate secure        authentication tokens(jwt).
+		```JWT_SECCRET=$SECRET_KEY$` - A random key that is used by the 
+		application to generate secure authentication tokens(jwt). ```
 
 
 Running app
 
-`$ python3 run.py `
+```$ python3 run.py ```
 
 # Running tests
-`$ pytest tests -v`
+```$ pytest tests -v```
 
 # Documentation
 

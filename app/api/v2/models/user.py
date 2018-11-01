@@ -1,10 +1,10 @@
 from app.api.v2.database import DBConnection
 from werkzeug.security import generate_password_hash
-from psycopg2 import sql
-import psycopg2.extras
+from psycopg2 import sql,extras
 
 
-cur = DBConnection.get_connection().cursor(cursor_factory = psycopg2.extras.DictCursor)
+
+cur = DBConnection.get_connection().cursor(cursor_factory = extras.RealDictCursor)
 
 class User(object):
 

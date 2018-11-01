@@ -1,10 +1,9 @@
 from app.api.v2.database import DBConnection
-from psycopg2 import sql
-import psycopg2.extras
+from psycopg2 import sql, extras
 import json
 
 
-cur = DBConnection.get_connection().cursor(cursor_factory = psycopg2.extras.DictCursor)
+cur = DBConnection.get_connection().cursor(cursor_factory=extras.RealDictCursor)
 
 class Sale():
     ''' create sale '''
@@ -20,7 +19,10 @@ class Sale():
         if sale_id:
             query = "SELECT * FROM sales WHERE id = '%s';" % sale_id
             cur.execute(query)
-            return cur.fetchone()
+            sale=cur.fetchone()
+            if sale:
+                sale['line_items'] = json.loads(sale['line_items'])
+            return sale
         return False
 
 
@@ -30,7 +32,10 @@ class Sale():
     def get():
         query = "SELECT * FROM sales"
         cur.execute(query)
-        return cur.fetchall()
+        sales = cur.fetchall()
+        for i, sale in enumerate(sales):
+            sales[i]['line_items'] = json.loads(sale['line_items'])
+        return sales
     
     @staticmethod
     def update(data,sale_id):
