@@ -96,8 +96,7 @@ class SalesController(Resource):
 
         ''' confirm requested vs what is in stock '''
         if int(data['item_count']) > int(product['quantity']):
-            message = "cant sell more than in stock for product id: %s" % (
-                product['id'])
+            message = "cant sell more than in stock"
             all_errors['errors'] = {"stock": [message]}
         return all_errors
 

@@ -46,7 +46,7 @@ class ProductController(Resource):
             product=Product.get_by_name(data['name'])
             ''' check if product with the same name exists '''
             if product:
-                message="product already exists with id: '%s' consider updating the quantity" % product['id']
+                message="product already exists consider updating the quantity" 
                 return make_response(jsonify({'message': message}), 409)
             else:
                 ''' create product '''
