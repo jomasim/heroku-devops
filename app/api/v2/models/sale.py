@@ -11,8 +11,14 @@ class Sale():
     def create(data):
 
         query = "INSERT INTO sales (created_by,line_items)" \
-                "VALUES('%s', '%s')" % (data['created_by'],json.dumps(data['line_items']))
-        return cur.execute(query)
+                "VALUES('%s', '%s') RETURNING line_items,created_by,create_at" % (
+                    data['created_by'],json.dumps(data['line_items']))
+
+        cur.execute(query)
+        sale=cur.fetchone()
+        if sale:
+            sale['line_items'] = json.loads(sale['line_items'])
+        return sale
     
     @staticmethod
     def get_by_id(sale_id):
