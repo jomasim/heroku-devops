@@ -4,13 +4,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/2454765c63bab49e3fb1/maintainability)](https://codeclimate.com/github/jomasim/store-api-v2/maintainability)
 
 
-store-api-v2 is a restful api to enable admin manage storeManager app
-it uses postgres database and jwt authentication for all endpoints
+store-api-v2 is a restful api to power  storeManager app front-end pages.
+It uses postgres database and jwt authentication for all its endpoints.
 
 # Requirements
-- `python3` - [Python](https://www.python.org/)
-- `pip` - [Install pip](https://pip.pypa.io/en/stable/installing/)
-- `virtualenv` - [install virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
+- python3 - [Python](https://www.python.org/)
+- pip - [Install pip](https://pip.pypa.io/en/stable/installing/)
+- virtualenv - [install virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
 
 # Endpoints
 | Http Method | Route | Functionality |
@@ -31,25 +31,40 @@ it uses postgres database and jwt authentication for all endpoints
 
 clone repo from github
 
-- ```$ git clone https://github.com/jomasim/store-api-v2.git```
-- ```$ cd store-api-v2```
-- ```$ git checkout dev```
+```
+$ git clone https://github.com/jomasim/store-api-v2.git 
+$ cd store-api-v2 
+$ git checkout dev
+
+```
 
 Create a virtual environment
 
-```$ python3 -m venv venv```
+```
+$ python3 -m venv venv
+
+```
 
 Activate the virtual environment
 
-```$ . venv/bin/activate```
+```
+$ . venv/bin/activate
+
+```
 
 Install project dependencies
 
-```$ pip install -r requirements.txt```
+```
+$ pip install -r requirements.txt
+
+```
 
 setup  the .env file.
 
-```$ cp .env.example .env```
+```
+$ cp .env.example .env
+
+```
 
 	production/stagiging database
 
@@ -72,21 +87,30 @@ setup  the .env file.
 		`TEST_DBPASS` - The testing database password.
 
 
-	setup jwt secret
+	setup jwt 
 
-		```JWT_SECCRET=$SECRET_KEY$` - A random key that is used by the 
-		application to generate secure authentication tokens(jwt). ```
+		JWT_SECCRET=`$SECRET_KEY$` - A random key that is used by the 
+		application to generate secure authentication tokens(jwt)
+
+		JWT_BLACKLIST=True  - Enables revoking of tokens when the user logs out
 
 
 Running app
 
-```$ python3 run.py ```
+```
+$ python3 run.py 
+
+```
 
 # Running tests
-```$ pytest tests -v```
+```
+$ pytest tests -v
+
+```
 
 # Documentation
 
+Find store-api-v2 docs [here](https://storeapiv2.docs.apiary.io/)
 
 # Framework 
 Python Flask 
