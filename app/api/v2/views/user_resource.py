@@ -2,9 +2,11 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource
 from app.api.v2.request import Request
 from app.api.v2.models.user import User
+from app.api.v2.views.admin import admin_required
 
 
 class UserController(Resource):
+    @admin_required
     def post(self):
 
         data = request.get_json()
