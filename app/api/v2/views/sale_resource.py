@@ -33,9 +33,9 @@ class SalesController(Resource):
 
         if not all_errors:
             ''' create sale '''
-            Sale.create(data)
+            sale=Sale.create(data)
             self.__update(data)
-            return make_response(jsonify({'message': "sale created successfully"}), 201)
+            return make_response(jsonify({'message': "sale created successfully","sale":sale}), 201)
         else:
             return make_response(jsonify(all_errors), 422)
 
@@ -96,8 +96,7 @@ class SalesController(Resource):
 
         ''' confirm requested vs what is in stock '''
         if int(data['item_count']) > int(product['quantity']):
-            message = "cant sell more than in stock for product id: %s" % (
-                product['id'])
+            message = "cant sell more than in stock"
             all_errors['errors'] = {"stock": [message]}
         return all_errors
 

@@ -23,8 +23,8 @@ class SaleTestCase(BaseTestCase):
         response = self.post('api/v2/sales/', new_sale)
         self.assertEqual(response.mimetype, 'application/json')
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(json.loads(response.data), {
-                         'message': 'sale created successfully'})
+        payload=json.loads(response.data)
+        self.assertEqual(payload['message'],'sale created successfully')
 
     def test_creating_sale_with_zero_item_count(self):
         ''' sample sale record '''
@@ -112,6 +112,6 @@ class SaleTestCase(BaseTestCase):
         response = self.post('/api/v2/sales', new_sale)
         self.assertEqual(response.status_code, 422)
         self.assertEqual(json.loads(response.data),
-                         {'errors': {'stock': ['cant sell more than in stock for product id: 1']}
+                         {'errors': {'stock': ['cant sell more than in stock']}
                           })
         self.assertEqual(response.mimetype, 'application/json')
