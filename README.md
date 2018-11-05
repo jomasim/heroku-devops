@@ -6,6 +6,7 @@
 
 store-api-v2 is a restful api to power  storeManager app front-end pages.
 It uses postgres database and jwt authentication for all its endpoints.
+The api is available at [https://store-api-v2.herokuapp.com/api/v2](https://store-api-v2.herokuapp.com/api/v2)
 
 # Requirements
 - python3 - [Python](https://www.python.org/)
@@ -56,6 +57,20 @@ Install project dependencies
 
 ```
 $ pip install -r requirements.txt
+
+```
+
+```
+setup database
+
+production database
+
+`$ psql -c 'create database <production_database>;' -U <postgres_username>`
+
+testing database
+
+`$ psql -c 'create database <testing_database>;' -U <postgres_username>`
+
 
 ```
 
