@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint,redirect, jsonify
 from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager
 from utils import env
@@ -10,6 +10,7 @@ from app.api.v2.views.sale_resource import SalesController
 from app.api.v2.views.logout_resource import Logout
 from app.api.v2.models.user import User
 from app.api.v2.black_list import get_black_list
+from flask_cors import CORS
 
 
 api_blueprint = Blueprint("store-api", __name__, url_prefix='/api/v2')
@@ -32,7 +33,7 @@ def create_app(config_setting):
 
 
     ''' setting api blueprint  '''
-    api = Api(api_blueprint, catch_all_404s=True)
+    api = Api(api_blueprint)
     api.add_resource(UserController, '/user/',
                      strict_slashes=False, endpoint='post_user')
     api.add_resource(AuthController, '/login/',
@@ -54,6 +55,31 @@ def create_app(config_setting):
                      strict_slashes=False, endpoint='get_all_sales')
 
     app.register_blueprint(api_blueprint)
+
+
+    # Catch all 404 errors
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return jsonify({"error": "resource not found on server"}), 404
+
+    # Catch all 500 errors
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        return jsonify({"error": "Internal server error has occured"}), 500
+
+
+    # Catch all 400 errors
+    @app.errorhandler(400)
+    def bad_request_error(error):
+        return jsonify({"error": "Bad request sent to thee server"}), 400
+
+
+    @app.route('/')
+    def root():
+        redirect('https://storeapiv2.docs.apiary.io/')
+
+    # add CORS handler 
+    CORS(app)
 
     return app
 
