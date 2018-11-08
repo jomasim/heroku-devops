@@ -76,7 +76,7 @@ def create_app(config_setting):
 
     @app.route('/')
     def root():
-        redirect('https://storeapiv2.docs.apiary.io/')
+        return redirect('https://storeapiv2.docs.apiary.io/')
 
     # add CORS handler 
     CORS(app)
