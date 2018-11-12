@@ -48,7 +48,7 @@ class SaleTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(json.loads(response.data), {'errors':
                                                      {'item count': [
-                                                         'item count should not be a zero']}
+                                                         'item count should not be a zero or a negative value']}
                                                      })
     def test_creating_sale_with_zero_selling_price(self):
         ''' sample sale record '''
@@ -72,7 +72,7 @@ class SaleTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(json.loads(response.data), {'errors':
                                                      {'selling price': [
-                                                         'selling price should not be a zero']}
+                                                         'selling price should not be a zero or a negative value']}
                                                      })
 
     def test_creating_sale_with_empty_data(self):

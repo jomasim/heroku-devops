@@ -34,7 +34,7 @@ class ProductTestCase(BaseTestCase):
         }, "price": "-34",'quantity':"8"}
         response = self.post('/api/v2/products', data=new_product)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(json.loads(response.data), {'errors': {'price': ['price should not be a zero']}})
+        self.assertEqual(json.loads(response.data), {'errors': {'price': ['price should not be a zero or a negative value']}})
         self.assertEqual(response.mimetype, 'application/json')
 
     def test_for_empty_data(self):

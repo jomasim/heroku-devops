@@ -82,13 +82,13 @@ class SalesController(Resource):
             return all_errors
         if int(data['item_count']) <= 0:
             all_errors['errors'] = {"item count": [
-                'item count should not be a zero']}
+                'item count should not be a zero or a negative value']}
         if int(data['selling_price']) <= 0:
             all_errors['errors'] = {"selling price": [
-                'selling price should not be a zero']}
+                'selling price should not be a zero or a negative value']}
         if int(data['item_count']) <= 0:
             all_errors['errors'] = {"item count": [
-                'item count should not be a zero']}
+                'item count should not be a zero or a negative value']}
 
         ''' get existing stock '''
 

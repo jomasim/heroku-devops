@@ -25,17 +25,17 @@ class AuthController(Resource):
             ''' verify password '''
             if AuthController.__verify_password(email,password):
                 user=User.get_by_email(email)
-                token=AuthController.__generate_token(user['id'])
+                exp = datetime.timedelta(minutes=45)
+                token=AuthController.__generate_token(user['id'],exp)
                 return make_response(jsonify({"message": "login successful",
-                                                  "access_token": token}), 200)
+                                                  "access_token": token,"exp":str(exp)}), 200)
             else:                                    
                 return make_response(jsonify({"message": "invalid credentials"}), 401)
         else:
             return make_response(jsonify(validator.validate()), 422)
 
     @staticmethod
-    def __generate_token(user_id):
-        exp = datetime.timedelta(minutes=30)
+    def __generate_token(user_id,exp):
         return create_access_token(user_id, exp)
 
     @staticmethod
