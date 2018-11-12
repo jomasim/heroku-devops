@@ -31,7 +31,7 @@ class ProductController(Resource):
             ''' search for product  using product_id '''
 
             if not Product.get_by_id(product_id):
-                return make_response(jsonify({'error': 'product not found'}), 404)
+                return make_response(jsonify({'message': 'product not found'}), 404)
             else:
                 return make_response(jsonify({'product': Product.get_by_id(product_id)}), 200)
 
@@ -109,7 +109,7 @@ class ProductController(Resource):
         all_errors = validator.validate()
         if all_errors == None and int(data['price']) <= 0:
             all_errors = {}
-            all_errors['errors'] = {"price": ['price should not be a zero']}
+            all_errors['errors'] = {"price": ['price should not be a zero or a negative value']}
         return all_errors
 
     def get_updated_list(self, data, existing):
