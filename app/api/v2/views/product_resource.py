@@ -84,18 +84,19 @@ class ProductController(Resource):
             return make_response(jsonify({"message": "product not found"}), 404)
 
         ''' update product '''
-        existing = Product.get_by_id(product_id)
-        updated_list=self.get_updated_list(data, existing)
+    
+        updated_list=self.get_updated_list(data, self.get_existing(product_id))
+
 
         ''' collect all errors '''
         
-        all_errors=self.validate_update(updated_list,existing)
-
+        all_errors=self.validate_update(updated_list,self.get_existing(product_id))
+       
         if not all_errors:
+            found=self.get_existing(product_id)
+            update=all(updated_list[k] == found[k] for k in found)
 
-            update=all(existing[k] == updated_list[k] for k in existing)
-
-            if not update:
+            if update:
                 return make_response(jsonify({"message": "nothing to update"}), 409)
 
             updated_list['created_by']=user
@@ -112,13 +113,19 @@ class ProductController(Resource):
             all_errors['errors'] = {"price": ['price should not be a zero or a negative value']}
         return all_errors
 
-    def get_updated_list(self, data, existing):
+
+    def get_updated_list(self,data, existing):
     
         sect=[key for key in set(existing) if key in set(data)]
-
+  
         if sect:
             for key in sect:
                 existing[key]=data[key]
+            
+            try:
+               existing['quantity']=int(existing['quantity'])
+            except ValueError:
+                existing['quantity']=0
             return existing
 
         return None
@@ -132,4 +139,9 @@ class ProductController(Resource):
         all_errors = self.get_validation_errors(update,self.request_schema)
         return all_errors
 
-
+    def get_existing(self,product_id):
+        found=Product.get_by_id(product_id)
+        found.pop("create_at")
+        found.pop("updated_at")
+        return found
+    
