@@ -23,7 +23,7 @@ class TestAuth(BaseTestCase):
         self.assertTrue(response)
         data=json.loads(response.data)
         self.assertEqual({"message":data['message']}, {
-                         'message': 'login successful'})
+                         'message': 'Login successful'})
         self.assertEqual(response.status_code,200)
 
     def test_login_with_invalid_credentials(self):
@@ -33,7 +33,7 @@ class TestAuth(BaseTestCase):
         response = self.post('/api/v2/login', data=user)
         self.assertTrue(response)
         self.assertEqual(json.loads(response.data), {
-                         'message': 'invalid credentials'})
+                         'message': 'Invalid credentials'})
         self.assertEqual(response.status_code,401)
 
     def test_login_with_empty_data(self):

@@ -34,3 +34,7 @@ class UserController(Resource):
                 return make_response(jsonify({'message': 'user created successfully'}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
+
+    @admin_required
+    def get(self):
+        return make_response(jsonify({'users':User.get()}),200)

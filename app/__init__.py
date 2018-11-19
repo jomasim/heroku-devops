@@ -60,7 +60,7 @@ def create_app(config_setting):
     # Catch all 404 errors
     @app.errorhandler(404)
     def not_found_error(error):
-        return jsonify({"error": "resource not found on server"}), 404
+        return jsonify({"error": "Resource not found on server"}), 404
 
     # Catch all 500 errors
     @app.errorhandler(500)
@@ -71,7 +71,7 @@ def create_app(config_setting):
     # Catch all 400 errors
     @app.errorhandler(400)
     def bad_request_error(error):
-        return jsonify({"error": "Bad request sent to thee server"}), 400
+        return jsonify({"error": "Bad request sent to the server"}), 400
 
 
     @app.route('/')
