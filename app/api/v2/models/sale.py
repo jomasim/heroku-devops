@@ -1,7 +1,7 @@
 from app.api.v2.database import DBConnection
 from psycopg2 import sql, extras
 import json
-
+from app.api.v2.models.product import Product
 
 cur = DBConnection.get_connection().cursor(cursor_factory=extras.RealDictCursor)
 
@@ -41,6 +41,9 @@ class Sale():
         sales = cur.fetchall()
         for i, sale in enumerate(sales):
             sales[i]['line_items'] = json.loads(sale['line_items'])
+            for x,line_item in enumerate( sales[i]['line_items']):
+                product=Product.get_by_id(line_item['product_id'])
+                line_item['product']=product
         return sales
     
     @staticmethod

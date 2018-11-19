@@ -47,3 +47,13 @@ class User(object):
             cur.execute(query)
             return cur.fetchone()
 
+    @staticmethod
+    def get():
+        query="SELECT * FROM users"
+        cur.execute(query)
+        users=cur.fetchall()
+
+        for user in users:
+            user.pop("password")
+
+        return users

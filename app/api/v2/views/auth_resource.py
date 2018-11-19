@@ -27,10 +27,13 @@ class AuthController(Resource):
                 user=User.get_by_email(email)
                 exp = datetime.timedelta(minutes=45)
                 token=AuthController.__generate_token(user['id'],exp)
-                return make_response(jsonify({"message": "login successful",
-                                                  "access_token": token,"exp":str(exp)}), 200)
+                user.pop("password")
+                return make_response(jsonify({"message": "Login successful",
+                                                  "access_token": token,
+                                                  "exp":str(exp),
+                                                  "user":user}), 200)
             else:                                    
-                return make_response(jsonify({"message": "invalid credentials"}), 401)
+                return make_response(jsonify({"message": "Invalid credentials"}), 401)
         else:
             return make_response(jsonify(validator.validate()), 422)
 
