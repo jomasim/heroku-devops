@@ -37,7 +37,7 @@ class Product(object):
     @staticmethod
     def get_by_name(product_name):
         if product_name:
-            query = "SELECT * FROM products WHERE name = '%s';" % product_name
+            query = "SELECT * FROM products WHERE name ILIKE '%s';" % product_name
             cur.execute(query)
             product=cur.fetchone()
             if product:
