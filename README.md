@@ -3,6 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jomasim/store-api-v2/badge.svg?branch=dev)](https://coveralls.io/github/jomasim/store-api-v2?branch=dev)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2454765c63bab49e3fb1/maintainability)](https://codeclimate.com/github/jomasim/store-api-v2/maintainability)
 
+HELLO HELOKU
 
 store-api-v2 is a restful api to power  storeManager app front-end pages.
 It uses postgres database and jwt authentication for all its endpoints.
